@@ -102,5 +102,19 @@ namespace Dapper_Sample_Project.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("reviews")]
+        public async Task<IActionResult> GetUserReviews()
+        {
+            try
+            {
+                var reviews = await _userRepository.GetUserReviews();
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

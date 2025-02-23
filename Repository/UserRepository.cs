@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Dapper_Sample_Project.DTOs.RequestDTOs;
+using Dapper_Sample_Project.DTOs.ResponseDTOs;
 using Dapper_Sample_Project.IRepository;
 using Microsoft.Data.SqlClient;
 using ProductAPI.Entities;
@@ -48,6 +49,19 @@ namespace Dapper_Sample_Project.Repository
             using var connection = ConnectionString();  
             var result = await connection.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", new { Id = id });
             return "User Deleted Successfully";
+        }
+
+        public async Task<ICollection<ReviewsResponseDTO>> GetUserReviews()
+        {
+            using var connection = ConnectionString();
+            var query = @"
+            SELECT R.Id, R.ProductId, R.Rating, R.Comment, R.ReviewDate, 
+                R.UserId, U.UserName 
+            FROM Review R
+            LEFT JOIN Users U ON R.UserId = U.Id";
+
+            var reviews = await connection.QueryAsync<ReviewsResponseDTO>(query);
+            return reviews.ToList();
         }
 
         public SqlConnection ConnectionString()
