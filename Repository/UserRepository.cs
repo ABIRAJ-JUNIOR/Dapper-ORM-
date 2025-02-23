@@ -28,6 +28,26 @@ namespace Dapper_Sample_Project.Repository
             return user!;
         }
 
+        public async Task<User> AddUser(User user)
+        {
+            using var connection = ConnectionString();
+            var result = await connection.ExecuteAsync("INSERT INTO Users (UserName, Email, Password, Role) VALUES (@UserName, @Email, @Password, @Role)", user);
+            return user;
+        }
+
+        public async Task<String> UpdateUser(User user)
+        {
+            using var connection = ConnectionString();
+            var result = await connection.ExecuteAsync("UPDATE Users SET UserName = @UserName, Email = @Email, Password = @Password, Role = @Role WHERE Id = @Id", user);
+            return "User Updated Successfully";
+        }
+
+        public async Task<string> DeleteUser(int Id)
+        {
+            using var connection = ConnectionString();  
+            var result = await connection.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", Id);
+            return "User Deleted Successfully";
+        }
 
         public SqlConnection ConnectionString()
         {
