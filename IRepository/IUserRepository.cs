@@ -1,4 +1,5 @@
-﻿using ProductAPI.Entities;
+﻿using Dapper_Sample_Project.DTOs.RequestDTOs;
+using ProductAPI.Entities;
 
 namespace Dapper_Sample_Project.IRepository
 {
@@ -6,7 +7,8 @@ namespace Dapper_Sample_Project.IRepository
     {
         Task<ICollection<User>> GetAllUsers();
         Task<User> GetUser(int id);
+        Task<UserRequestDTO> AddUser(UserRequestDTO user);
         Task<string> DeleteUser(int Id);
-        Task<String> UpdateUser(User user);
+        Task<string> UpdateUser(User user);
     }
 }

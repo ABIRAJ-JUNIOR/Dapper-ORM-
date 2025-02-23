@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper_Sample_Project.DTOs.RequestDTOs;
 using Dapper_Sample_Project.IRepository;
 using Microsoft.Data.SqlClient;
 using ProductAPI.Entities;
@@ -28,24 +29,24 @@ namespace Dapper_Sample_Project.Repository
             return user!;
         }
 
-        public async Task<User> AddUser(User user)
+        public async Task<UserRequestDTO> AddUser(UserRequestDTO user)
         {
             using var connection = ConnectionString();
             var result = await connection.ExecuteAsync("INSERT INTO Users (UserName, Email, Password, Role) VALUES (@UserName, @Email, @Password, @Role)", user);
             return user;
         }
 
-        public async Task<String> UpdateUser(User user)
+        public async Task<string> UpdateUser(User user)
         {
             using var connection = ConnectionString();
             var result = await connection.ExecuteAsync("UPDATE Users SET UserName = @UserName, Email = @Email, Password = @Password, Role = @Role WHERE Id = @Id", user);
             return "User Updated Successfully";
         }
 
-        public async Task<string> DeleteUser(int Id)
+        public async Task<string> DeleteUser(int id)
         {
             using var connection = ConnectionString();  
-            var result = await connection.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", Id);
+            var result = await connection.ExecuteAsync("DELETE FROM Users WHERE Id = @Id", new { Id = id });
             return "User Deleted Successfully";
         }
 
